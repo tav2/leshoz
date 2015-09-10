@@ -151,7 +151,7 @@ class Database extends MY_Model {
         return 'admin';
     }
 
-        function dell_news($data)
+    function dell_news($data)
     {
         $this->db->where('news_id', $data['id']);
         $this->db->delete('news');

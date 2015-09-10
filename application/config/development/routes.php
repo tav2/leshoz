@@ -64,6 +64,8 @@ $route['admin/components/(:any)/(:any)/(:any)/(:any)'] = 'admin/components/$1/$1
 $route['kontakt'] = 'welcome/kontakt';
 $route['index'] = 'welcome/index';
 $route['magazin'] = 'welcome/magazin';
+$route['magazin_project'] = 'welcome/magazin_project';
+$route['magazin_project_zakaz'] = 'welcome/magazin_project_zakaz';
 $route['single'] = 'welcome/single';
 $route['news'] = 'welcome/news';
 $route['kompany'] = 'welcome/kompany';
@@ -73,10 +75,13 @@ $route['akcii'] = 'welcome/akcii';
 $route['vopr'] = 'welcome/vopr';
 $route['klienti'] = 'welcome/klienti';
 $route['proizv'] = 'welcome/proizv';
-$route['got'] = 'welcome/got';
+$route['galereya'] = 'welcome/galereya';
 $route['statyi'] = 'welcome/statyi';
 $route['tovar'] = 'welcome/tovar';
-$route['prais'] = 'welcome/prais';
+$route['prices'] = 'welcome/prices';
+$route['cart'] = 'welcome/cart';
+$route['checkout'] = 'welcome/checkout';
+$route['login'] = 'welcome/login';
 
 // $route['бани-из-сруба'] = 'welcome/magazin';
 

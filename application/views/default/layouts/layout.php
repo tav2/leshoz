@@ -73,13 +73,13 @@
 							<button type='submit' class="submit-search" name='submit'><i class="icon-search"></i>
 							</button>
 						</form>
-						<a href="login.html" class='info login'>
+						<a href="login" class='info login'>
 							<span class="icon"><i class="icon-lock"></i>
 							</span>Войти</a>
-						<a href="cart.html" class='info cart'>
+						<a href="cart" class='info cart'>
 							<span class="icon"><i class="icon-basket"></i>
 							</span>Товаров
-							<span>0</span>
+							<span><?=$cart_count?></span>
 						</a>
 					</div>
 				</div>
@@ -110,7 +110,7 @@
 								<ul class="nav navbar-nav">
 									<li><a href="index">Главная</a>
 									<li class="dropdown">
-										<a href="galeriya_all" class="dropdown-toggle" data-toggle="dropdown">Компания <b class="caret"></b></a>
+										<a href="" class="dropdown-toggle" data-toggle="dropdown">Компания <b class="caret"></b></a>
 										<ul class="dropdown-menu">
 											<li><a href="kompany">О нас</a>
 											</li>
@@ -127,18 +127,18 @@
 										</ul>
 									</li>
 									</li>
-									<li><a href="got">Галерея</a></li>
+									<li><a href="galereya">Галерея</a></li>
 									<li><a href="/magazin">Товары</a></li>
 									<li class="dropdown">
 										<a href="galeriya_all" class="dropdown-toggle" data-toggle="dropdown">Проекты<b class="caret"></b></a>
 										<ul class="dropdown-menu">
-											<li><a href="/magazin">Готовые проекты</a>
+											<li><a href="/magazin_project">Готовые проекты</a>
 											</li>
-											<li><a href="/magazin">Проекты на заказ</a>
+											<li><a href="/magazin_project_zakaz">Проекты на заказ</a>
 											</li>
 										</ul>
 									</li>
-									<li><a href="/prais">Прайс</a></li>
+									<li><a href="/prices">Прайс</a></li>
 
 									<li><a href="/kontakt">Контакты</a>
 									</li>
@@ -178,11 +178,14 @@
 								</div>
 							</div>
 							<div class="col-md-5">
-								<h3 class="wdgt-title">О нас</h3>
+								<!-- о нас -->
+								<?php foreach($about as $id): ?>
+								<h3 class="wdgt-title"><?php echo $id['staticpage_title'] ?></h3>
 								<p>
-									<!-- Мы любим дерево и считаем его живым строительным материалом, и поэтому наши творения особенно отличаются от других построек в Казахстане. -->
-									ИП «Горбань» активный участник рынка строительных  услуг Республики Казахстан, а именно в сфере изготовления и реализации изделий из дерева хвойных и лиственных пород.
+									<?php echo $id['staticpage_text'] ?>
 								</p>
+								<?php endforeach ?>
+
 								<a href="javascript:;" class="iconize">
 									<i class="fa fa-facebook"></i>
 								</a>
@@ -218,17 +221,13 @@
 						<div class="row">
 							<div class="col-md-3 col-sm-6">
 								<div class="widget-box">
-									<h3 class="wdgt-title">РАБОЧЕЕ ВРЕМЯ</h3>
-									<ul class="openhour">
-										<li class="openday">Понедельник</li>
-										<li class="opentime">12.00 AM &mdash; 10.12 PM</li>
-										<li class="openday">Вторник</li>
-										<li class="opentime">07.00 AM &mdash; 10.20 AM</li>
-										<li class="opentime">Перерыв</li>
-										<li class="opentime">02.00 PM &mdash; 09.31 PM</li>
-										<li class="openday">Воскресение</li>
-										<li class="opentime">07.00 AM &mdash; 11.00 PM</li>
-									</ul>
+									<!-- рабочее время -->
+									<?php foreach($time as $id): ?>
+									<h3 class="wdgt-title"><?php echo $id['staticpage_title'] ?></h3>
+									<p>
+										<?php echo $id['staticpage_text'] ?>
+									</p>
+									<?php endforeach ?>
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
@@ -267,24 +266,13 @@
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="widget-box">
-									<h3 class="wdgt-title">КОНТАКТЫ</h3>
-									<p class="wdgt-address">
-										<strong>Адрес</strong>
-										 ул. Жиенкулова, 6 (Фурманова, 19) склад №7
+									<!-- контакты -->
+									<?php foreach($kontakt as $id): ?>
+									<h3 class="wdgt-title"><?php echo $id['staticpage_title'] ?></h3>
+									<p>
+										<?php echo $id['staticpage_text'] ?>
 									</p>
-									<p class="wdgt-address">
-										<strong>Телефон, Факс</strong>
-										+7 (7172) 433 028
-									</p>
-
-									<!-- вставка -->
-									</p>
-									<p class="wdgt-address">
-										<strong>Мобильный телефон</strong>
-										87015240436; 87015240432; 87778809098
-									</p>
-									<!-- конец вставки -->
-
+									<?php endforeach ?>
 								</div>
 							</div>
 						</div>
@@ -340,4 +328,4 @@
 			</script>
 </body>
 </html>
-<!-- TUMBAS -->
+<!-- TUMBAS шаблон-->

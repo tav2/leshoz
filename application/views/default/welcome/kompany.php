@@ -1,4 +1,4 @@
-<!-- BEGIN  TOP SLIDER -->
+
 <div class="topslider fullwidth">
 	<div class="sequence-theme">
 		<div id="sequence">
@@ -8,22 +8,34 @@
 
 			<ul class="sequence-canvas">
 				<li class="animate-in" >
-					<div class="seq-bg" style="background:url('assets/images/kompany/p1.jpg');background-size:cover;-webkit-background-size:cover;-moz-background-size:cover;"></div>
-					<h2 class="title">Строительство домов и коттеджей под ключ</h2>
-					<h3 class="subtitle">The Responsive Slider with Advanced Extraordinary CSS3 Transitions</h3>
-					<img class="model" src="assets/images/bani/b1.png" alt="Model 1" />
+					<div class="seq-bg" style="background:url('<?php echo $slaider_fon_1 ?>');background-size:cover;-webkit-background-size:cover;-moz-background-size:cover;"></div>
+
+					<?php foreach($slaider_text_1 as $id): ?>
+					<h2 class="title"><?php echo $id['staticpage_title'] ?></h2>
+					<h3 class="subtitle"><?php echo $id['staticpage_text'] ?></h3>
+					<?php endforeach ?>
+
+					<img class="model" src="<?php echo $slaider_1 ?>" alt="Model 1" />
 				</li>
 				<li>
-					<div class="seq-bg" style="background:url('assets/images/kompany/p2.jpg');background-size:cover;-webkit-background-size:cover;-moz-background-size:cover;"></div>
-					<h2 class="title">Строительство домов и коттеджей под ключ</h2>
-					<h3 class="subtitle">Create unique sliders using CSS3 transitions, with smooth moves</h3>
-					<img class="model" src="assets/images/bani/b1.png" alt="Model 2" />
+					<div class="seq-bg" style="background:url('<?php echo $slaider_fon_2 ?>');background-size:cover;-webkit-background-size:cover;-moz-background-size:cover;"></div>
+					
+					<?php foreach($slaider_text_2 as $id): ?>
+					<h2 class="title"><?php echo $id['staticpage_title'] ?></h2>
+					<h3 class="subtitle"><?php echo $id['staticpage_text'] ?></h3>
+					<?php endforeach ?>
+
+					<img class="model" src="<?php echo $slaider_2 ?>" alt="Model 2" />
 				</li>
 				<li>
-					<div class="seq-bg" style="background:url('assets/images/top-slider/slide_3.jpg');background-size:cover;-webkit-background-size:cover;-moz-background-size:cover;"></div>
-					<h2 class="title">Cutting Edge</h2>
-					<h3 class="subtitle">Supports modern browsers, old browsers (IE7+), touch devices and responsive designs</h3>
-					<img class="model" src="assets/images/iphone-small.png" alt="Model 3" />
+					<div class="seq-bg" style="background:url('<?php echo $slaider_fon_3 ?>');background-size:cover;-webkit-background-size:cover;-moz-background-size:cover;"></div>
+					
+					<?php foreach($slaider_text_3 as $id): ?>
+					<h2 class="title"><?php echo $id['staticpage_title'] ?></h2>
+					<h3 class="subtitle"><?php echo $id['staticpage_text'] ?></h3>
+					<?php endforeach ?>
+
+					<img class="model" src="<?php echo $slaider_3 ?>" alt="Model 3" />
 				</li>
 			</ul>
 		</div>
@@ -106,78 +118,50 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="content-box">
-				<h3>Презентация</h3>
-				<p>ИП «Горбань» активный участник рынка строительных  услуг Республики Казахстан, а именно в сфере изготовления и реализации изделий из дерева хвойных и лиственных пород.</p>
+				<!-- презентация -->
+				<?php foreach($prezent as $id): ?>
+					<h3><?php echo $id['staticpage_title'] ?></h3>
+					<p><?php echo $id['staticpage_text'] ?></p>
+				<?php endforeach ?>
+
 				<div class="responsive-video">
-					<iframe src="http://player.vimeo.com/video/50194334?title=0&amp;byline=0&amp;portrait=0&amp;color=7ac144" width="500" height="281" allowfullscreen></iframe>
+					<!-- <iframe src="http://player.vimeo.com/video/50194334?title=0&amp;byline=0&amp;portrait=0&amp;color=7ac144" width="500" height="281" allowfullscreen></iframe> -->
+					<video controls> 
+						<source src="<?php echo $video ?>" type="video/mp4"> 
+					</video>
+
 				</div>
 			</div>
 		</div>
 		<div class="col-md-6">
 			<div class="content-box">
-				<h3>Направления</h3>
-				<p>В работе  ИП «Горбань Р.В.»  есть несколько направлений:</p>
+				<!-- направления -->
+				<?php foreach($napravl as $id): ?>
+					<h3><?php echo $id['staticpage_title'] ?></h3>
+					<p><?php echo $id['staticpage_text'] ?></p>
+				<?php endforeach ?>
+
 				<div class="panel-group" id="accordion">
+
+					<?php foreach($napravleniya as $id): ?>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-									<i class="glyphicon glyphicon-tree-conifer"></i>&nbsp;&nbsp;&nbsp;Погонажные изделия.
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $id['staticpage_content_id'] ?>">
+									<?php echo $id['staticpage_title'] ?>
 								</a>
 							</h4>
 						</div>
-						<div id="collapseOne" class="panel-collapse collapse in">
+						<div id="collapse<?php echo $id['staticpage_content_id'] ?>" class="panel-collapse collapse">
 							<div class="panel-body">
-								<p>Реализация погонажных изделий — евровагонка, плинтус, наличник, доска пола, блок-хаус, декинг (террасная доска) из хвойных и лиственных пород дерева (сосна, пихта, кедр, лиственница, ель, осина, липа).
+								<p>
+									<?php echo $id['staticpage_text'] ?>
 								</p>
 							</div>
 						</div>
 					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-									<i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;&nbsp;Срубы домов, бань.
-								</a>
-							</h4>
-						</div>
-						<div id="collapseTwo" class="panel-collapse collapse">
-							<div class="panel-body">
-								<p>Реализация срубов домов и бань из оцилиндрованного бревна, монтаж срубов бань, монтаж и сдача под ключ.
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-									<i class="fa fa-beer"></i>&nbsp;&nbsp;&nbsp;Бондарные изделия.
-								</a>
-							</h4>
-						</div>
-						<div id="collapseThree" class="panel-collapse collapse">
-							<div class="panel-body">
-								<p>Реализация бондарных изделий из липы, кедра: ушата, шайки, ковши, бочата для засола, национальные изделия, в том числе Кyбi для приготовления кумыза.
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-									<i class="fa fa-university"></i>&nbsp;&nbsp;&nbsp;Малые архитектурные формы.
-								</a>
-							</h4>
-						</div>
-						<div id="collapseFour" class="panel-collapse collapse">
-							<div class="panel-body">
-								<p>Изготовление малых архитектурных форм: беседки, скамьи, столы, декоративные стилизованные ограждения, теневые навесы, детские игровые площадки, качели.
-								</p>
-							</div>
-						</div>
-					</div>
+					<?php endforeach ?>
+
 				</div>
 			</div>
 		</div>
@@ -231,4 +215,4 @@
 	</div>
 </div>
 <!--/.container -->
-<!-- END INDEX CONTENT -->
+<!-- END INDEX CONTENT

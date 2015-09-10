@@ -12,37 +12,15 @@
 			</div>
 			<div class="col-md-6">
 				<div class="content-box">
-					<h3>Контакты</h3>
+
+					<!-- контакты -->
+					<?php foreach($kontakt1 as $id): ?>
+					<h3 ><?php echo $id['staticpage_title'] ?></h3>
 					<p>
-						<strong>Наш адрес</strong>
-						<br/>010000, г. Астана, ул.Жиенкулова 6, склад №7
+						<?php echo $id['staticpage_text'] ?>
 					</p>
-					<p>
-						<strong>Телефоны</strong>
-					</p>
-					<p>
-						<a href="tel:7(7172)433028" class="btn btn-angle"><i class="fa fa-phone"></i> +7(7172)43-30-28</a>
-						<!-- тел.факс +7(7172)43-30-28 -->
-					</p>
-					<p>
-						<a href="tel:+7(701)5240436" class="btn btn-angle"><i class="fa fa-mobile"></i> +7(701)524-04-36</a>
-						<!-- тел. +7(701)524-04-36 -->
-					</p>
-					<p>
-						<a href="tel:+7(701)5240432" class="btn btn-angle"><i class="fa fa-mobile"></i> +7(701)524-04-32</a>
-						<!-- тел. +7(701)524-04-32 -->
-					</p>
-					<p>
-						<a href="tel:+7(707)5240436" class="btn btn-angle"><i class="fa fa-mobile"></i> +7(707)524-04-36</a>
-						<!-- тел. +7(707)524-04-36 -->
-					</p>
-					<p>
-						<a href="tel:+7(777)8809098" class="btn btn-angle"><i class="fa fa-mobile"></i> +7(777)880-90-98</a>
-						<!-- тел. +7(777)880-90-98 -->
-					</p>
-					<p>
-						
-					</p>
+					<?php endforeach ?>
+
 				</div>
 			</div>
 		</div>
@@ -57,26 +35,15 @@
 			</div>
 			<div class="col-md-6">
 				<div class="content-box">
-					<h3>Контакты</h3>
+
+					<!-- контакты -->
+					<?php foreach($kontakt2 as $id): ?>
+					<h3 ><?php echo $id['staticpage_title'] ?></h3>
 					<p>
-						<strong>Наш филиал</strong>
-						<br/>080000, г. Тараз  ул.Байзак Батыра 52а.
+						<?php echo $id['staticpage_text'] ?>
 					</p>
-					<p>
-						<strong>Телефоны</strong>
-					</p>
-					<p>
-						<a href="tel:+77775077256" class="btn btn-angle"><i class="fa fa-mobile"></i> +7 777 507-72-56</a>
-						<!-- тел: +7 777 5077256  -->
-					</p>
-					<p>
-						<a href="tel:+77005277256" class="btn btn-angle"><i class="fa fa-mobile"></i> +7 700 527-72-56</a>
-						<!-- тел. +7 700 5277256 -->
-					</p>
-					<p>
-						<a href="tel:+77057895686" class="btn btn-angle"><i class="fa fa-mobile"></i> +7 705 789-56-86</a>
-						<!-- тел. +7 705 7895686 -->
-					</p>
+					<?php endforeach ?>
+
 				</div>
 			</div>
 		</div>

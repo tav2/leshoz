@@ -425,6 +425,12 @@ small {
     -o-transition: all ease-in-out 0.2s;
     transition: all ease-in-out 0.2s;
 }
+/*моя вставка*/
+ .input-black.w70
+{
+        width: 70px;
+}
+/*моя вставка конец*/
 .input-black:focus {
     border:1px solid #111;
 }

@@ -5,10 +5,143 @@ class Database extends MY_Model {
     protected $_table_news_content = 'tovar_content';
     protected $_table = 'tovar_material';
 
+    function cutStr($str, $lenght = 200, $end = '...', $charset = 'UTF-8', $token = '~')
+    {
+        $str = strip_tags($str);
+        if (mb_strlen($str, $charset) >= $lenght)
+        {
+            $wrap = wordwrap($str, $lenght, $token);
+            $str_cut = mb_substr($wrap, 0, mb_strpos($wrap, $token, 0, $charset), $charset);
+            return $str_cut .= $end;
+        } else {
+            return $str;
+        }
+    }
+
+
+    public function get_all_material()
+    {
+        return $this->db->get($this->_table)->result_array();
+    }
+
+    public function get_material($material_id)
+    {
+        $this->db->where('tovar_material_id', $material_id);
+
+        $rez = $this->db->get('tovar_material');
+        foreach ($rez->result_array() as $item) {$rez2 = $item['tovar_material_name'] ;}
+        return $rez2;
+    }
+
+    public function get_color($color_id)
+    {
+        $this->db->where('tovar_color_id', $color_id);
+
+        $rez = $this->db->get('tovar_color');
+        foreach ($rez->result_array() as $item) {$rez2 = $item['tovar_color_name'] ;}
+        return $rez2;
+    }
+
+    public function get_sub_category($subcategory_id)
+    {
+        $this->db->where('tovar_sub_category_id', $subcategory_id);
+
+        $rez = $this->db->get('tovar_sub_category');
+        foreach ($rez->result_array() as $item) {$rez2 = $item['tovar_sub_category_name'] ;}
+        return $rez2;
+    }
+
+    function get_tovar($tovar_id)
+    {
+        $this->db->where('tovar_id', $tovar_id);
+
+        $rez = $this->db->get('tovar');
+        return $rez->result_array();
+    }
+
+    function get_tovar_sub_category($id)
+    {
+        $this->db->where('tovar_sub_category_id', $id);
+
+        $rez = $this->db->get('tovar_sub_category');
+        return $rez->result_array();
+    }
+
+    function get_tovar_sub_category_text($id)
+    {
+        $this->db->where('tovar_sub_category_id', $id);
+
+        $rez = $this->db->get('tovar_sub_category');
+        foreach ($rez->result_array() as $item) {$rez2 = $item['tovar_sub_category_text'] ;}
+        return $rez2;
+    }
+
+    function get_tovar_img($tovar_id)
+    {
+        $this->db->where('tovar_id', $tovar_id);
+
+        $rez = $this->db->get('tovar_img');
+        return $rez->result_array();
+    }
+
+    function get_tovar_sub_category_img($id)
+    {
+        $this->db->where('tovar_sub_category_id', $id);
+
+        $rez = $this->db->get('tovar_sub_category_img');
+        return $rez->result_array();
+    }
+
+    // выбор товара только с нужной подкатегорией
+    function get_tovar_sub($subcategory_id)
+    {
+        $this->db->where('tovar_sub_category_id', $subcategory_id);
+
+        return $this->db->get('tovar')->result_array();
+        // return $rez->result_array();
+    }
+
+    // выбор подкатегории только с нужной категорией
+    function get_sub_category_menu($category_id)
+    {
+        $this->db->where('tovar_category_id', $category_id);
+
+        return $this->db->get('tovar_sub_category')->result_array();
+        // return $rez->result_array();
+    }
+
+    // выбор меню товара только с нужной категорией
+    // function get_tovar_cat($category_id)
+    // {
+    //     $this->db->where('tovar_sub_category_id', $category_id);
+    //     $rez = $this->db->get('tovar_sub_category')->result_array();
+
+    //     foreach ($rez->result_array() as $item) {$rez2 = $item['tovar_sub_category_id'] ;}
+    //     return $rez2;
+
+    //     $this->db->where('tovar_sub_category_id', $category_id);
+    //     $qwery = $this->db->get('tovar_sub_category')->result_array();
+        // return $rez->result_array();
+    // }
 
     public function get_all_category()
     {
-        return $this->db->get($this->_table)->result_array();
+        return $this->db->get('tovar_category')->result_array();
+    }
+
+    public function get_all_sub_category()
+    {
+        return $this->db->get('tovar_sub_category')->result_array();
+    }
+
+    public function get_all_tovar()
+    {
+        return $this->db->get('tovar')->result_array();
+    }
+
+    public function get_all_color()
+    {
+        return $this->db->get('tovar_color')->result_array();
     }
 
         public function delete_item($id)
@@ -17,10 +150,103 @@ class Database extends MY_Model {
         $this->db->delete($this->_table);
     }
 
+    public function delete_color($id)
+    {
+        $this->db->where('tovar_color_id', $id);
+        $this->db->delete('tovar_color');
+    }
+
+    public function delete_sub_category($id)
+    {
+        $this->db->where('tovar_sub_category_id', $id);
+        $this->db->delete('tovar_sub_category');
+    }
+
     
+    public function delete_category($id)
+    {
+        $this->db->where('tovar_category_id', $id);
+        $this->db->delete('tovar_category');
+    }
+
+    public function dell_tovar($id)
+    {
+        $this->db->where('tovar_id', $id);
+        $this->db->delete('tovar');
+    }
+
+    public function dell_all_img($id)
+    {
+        $this->db->where('tovar_id', $id);
+
+        $rez = $this->db->get('tovar_img');
+        foreach ($rez->result_array() as $item) 
+        {
+            $put = $item['tovar_img_adres'] ;
+            unlink($put);
+        }
+
+        $this->db->where('tovar_id', $id);
+        $this->db->delete('tovar_img');
+    }
+
+    public function dell_img($id)
+    {
+        $this->db->where('tovar_img_id', $id);
+
+        $rez = $this->db->get('tovar_img');
+        foreach ($rez->result_array() as $item) {$put = $item['tovar_img_adres'] ;}
+        unlink($put);
+
+        $this->db->where('tovar_img_id', $id);
+        $this->db->delete('tovar_img');
+    }
+
+    public function delete_sub_category_img($id)
+    {
+        $this->db->where('tovar_sub_category_img_id', $id);
+
+        $rez = $this->db->get('tovar_sub_category_img');
+        foreach ($rez->result_array() as $item) {$put = $item['tovar_sub_category_img_adres'] ;}
+        unlink($put);
+
+        $this->db->where('tovar_sub_category_img_id', $id);
+        $this->db->delete('tovar_sub_category_img');
+    }
+
     public function add_data_material($data)
     {
-         $this->db->insert($this->_table, $data); 
+        $this->db->insert($this->_table, $data); 
+    }
+
+    public function add_data_color($data)
+    {
+        $this->db->insert('tovar_color', $data); 
+    }
+
+    public function add_data_category($data)
+    {
+        $this->db->insert('tovar_category', $data); 
+    }
+
+    public function add_data_sub_category($data, $id)
+    {
+        If ($id!='')
+        {
+            $this->db->where('tovar_sub_category_id', $id);
+            $this->db->update('tovar_sub_category', $data);
+        }
+        else $this->db->insert('tovar_sub_category', $data); 
+    }
+
+    public function add_data_tovar($data, $id)
+    {
+        If ($id!='')
+        {
+            $this->db->where('tovar_id', $id);
+            $this->db->update('tovar', $data);
+        }
+        else $this->db->insert('tovar', $data);
     }
 
     //были тут ---------------------------------

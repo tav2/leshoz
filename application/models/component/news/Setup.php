@@ -14,7 +14,10 @@ class Setup extends CI_Model {
     {
         if($reinstall === true)
         {
-            $this->dbforge->drop_table($this->_table_blank);
+            $this->dbforge->drop_table($this->_table_1);
+            $this->dbforge->drop_table($this->_table_2);
+            $this->dbforge->drop_table($this->_table_3);
+            $this->dbforge->drop_table($this->_table_4);
         }
         $this->_fields_1 = array(
             'news_id' => array(
