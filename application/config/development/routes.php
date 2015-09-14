@@ -82,6 +82,7 @@ $route['prices'] = 'welcome/prices';
 $route['cart'] = 'welcome/cart';
 $route['checkout'] = 'welcome/checkout';
 $route['login'] = 'welcome/login';
+$route['account'] = 'welcome/account';
 
 // $route['бани-из-сруба'] = 'welcome/magazin';
 

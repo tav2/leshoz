@@ -46,6 +46,11 @@ class Setup extends CI_Model {
             //дата создания пользователя
             'customer_date' => array( 
                 'type' => 'date',
+            ),
+            //контактная информация
+            'customer_password' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '256'
             )
         );
         $this->dbforge->add_field($this->_fields_customer);
@@ -83,6 +88,11 @@ class Setup extends CI_Model {
                 'constraint' => 5,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
+            ),
+            'customer_product_amount' => array(
+                'type' => 'INT',
+                'constraint' => 5,
+                'unsigned' => TRUE,
             ),
             'customer_cart_id' => array(
                 'type' => 'INT',

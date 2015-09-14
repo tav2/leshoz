@@ -12,6 +12,7 @@ class Welcome extends Base_Controller {
 		$this->load->model('reg_model');
 		// $this->load->model('component/news/api_news', 'news_api');
 		$this->load->model('component/tovar/Api_tovar', 'tovar_api');
+		$this->load->model('component/users/Api_users', 'users_api');
 		$this->load->model('component/galereya/Api_galereya', 'galereya_api');
 		$this->load->model('component/pricelist/api_pricelist', 'prices_api');
 		// $this->load->model('component/tovar/database', 'dbmodel');
@@ -265,13 +266,23 @@ class Welcome extends Base_Controller {
 
 		if ($action == 'order') 
 		{
-			// $post='еще не тут';
-			if ($this->input->post('cfmail')) 
+			//если ссессия загружена
+			if($this->session->userdata('logged_in'))
 			{
-				$post=$this->input->post('cfmail');
+				$customer_info = $this->users_api->get_customer_info();
+			} 
+			else
+			{
+				$customer_info = $this->users_api->take_customer_info();
+			}
+
+			if ($this->input->post('cfselect')) 
+			{
+				// $post=$this->input->post('cfmail');
 				$this->cart->confirtm_order();
 				//нужно будет сделать очистку базы таблицы cart и создать пользователя с историей покупок и послать почту для 
 				// подтверждения регистрации
+
 
 				//выводим сообщение об этом всем
 				$this->session->set_flashdata('cart_order1', 'Заказ получен. Вам отправленно письмо с регистрационными данными - для входа на наш сайт.');
@@ -279,14 +290,15 @@ class Welcome extends Base_Controller {
 				// redirect('cart');
 			}
 
-			$this->render('checkout', array('items' => $this->cart->get_cart_items()));
+			$this->render('checkout', array(
+				'items' => $this->cart->get_cart_items(),
+				'customer_info' => $customer_info
+				));
 		} 
 		else 
 		{
 			$this->render('cart', array('items' => $this->cart->get_cart_items()));
 		}
-
-
 	}
 //------------------------------------------------------------------
 	public function action_checkout()//оплата
@@ -294,13 +306,73 @@ class Welcome extends Base_Controller {
 		$this->render('checkout');
 	}
 //------------------------------------------------------------------
+	public function action_account()//страница пользователя
+	{
+
+		if ($this->input->post('vihod'))
+		{
+			$this->session->unset_userdata('usermail');
+			$this->session->unset_userdata('logged_in');
+			$this->render('index', array(
+			'api_get_pogonaj' => $this->tovar_api->get_pogonaj_forindex(),
+			'api_get_project' => $this->tovar_api->get_project_forindex(),
+			'slider_img_1' => $this->Staticpage_model->get_file(1, 0),
+			'slider_img_2' => $this->Staticpage_model->get_file(1, 1),
+			'slider_img_3' => $this->Staticpage_model->get_file(1, 2),
+			));
+		} 
+		else
+		{
+			$this->render('account', array(
+			'api_get_cart' => $this->users_api->get_all_cart(),
+			));
+		}
+
+	}
+//------------------------------------------------------------------
 	public function action_login()//регистрация и логин
 	{
+		//если нажали выход
+		if ($this->input->post('vihod'))
+		{
+			$this->session->unset_userdata('usermail');
+			$this->session->unset_userdata('logged_in');
+			$this->render('index', array(
+			'api_get_pogonaj' => $this->tovar_api->get_pogonaj_forindex(),
+			'api_get_project' => $this->tovar_api->get_project_forindex(),
+			'slider_img_1' => $this->Staticpage_model->get_file(1, 0),
+			'slider_img_2' => $this->Staticpage_model->get_file(1, 1),
+			'slider_img_3' => $this->Staticpage_model->get_file(1, 2),
+			));
+			return 0;
+		} 
+
 		//если нажали войти
 		if ($this->input->post('name_login'))
 		{
+
 			//проверяем пользователя и включаем его сессию 
-			echo "login";
+			$test=$this->reg_model->vhod_proverka($this->input->post('name_login'), $this->input->post('password_login'));
+			if ($test) 
+			{
+				//устанавливаем данные сессии
+				$newdata = array(
+				'usermail'  => $test,
+				'logged_in' => TRUE
+				);
+				$this->session->set_userdata($newdata);
+				$this->session->set_flashdata('login_success', 'Вы успешно авторизировались!');
+				// рендер в личный кабинет
+				$this->render('account', array(
+					'api_get_cart' => $this->users_api->get_all_cart(),
+					));
+				return 0;
+			}
+			else 
+			{
+				$this->session->set_flashdata('login_success', 'Логин или пароль неверен!');
+			}
+			// echo "login";
 		}
 
 		//форма регистрации
@@ -308,40 +380,36 @@ class Welcome extends Base_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('name_create', 'Username', 'required|callback_username_check', array('required' => 'Введите имя пользователя.'));
-		$this->form_validation->set_rules('password_create', 'Password', 'required|matches[password_create_povtor]', array('required' => 'Вы дожны выбрать %s.'));
-		$this->form_validation->set_rules('password_create_povtor', 'Password Confirmation', 'required');
-		$this->form_validation->set_rules('email_create', 'Email', 'required|valid_email|callback_email_check', array('required' => 'Введите емайл'));
+		// формируем массивы сообщений валидации
+		if ($this->input->post('name_create')) 
+		{
+			$name = array('required' => 'Введите имя пользователя.');
+			$pass = array('required' => 'Вы дожны выбрать %s.');
+			$email = array('required' => 'Введите емайл.');
+			$this->form_validation->set_rules('name_create', 'Username', 'required', $name);
+			$this->form_validation->set_rules('password_create', 'Password', 'required|matches[password_create_povtor]', $pass);
+			$this->form_validation->set_rules('password_create_povtor', 'Password Confirmation', 'required');
+			$this->form_validation->set_rules('email_create', 'Email', 'required|valid_email|callback_email_check', $email);
+		}
 
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->render('login');
-		}
-		else
-		{
-			//создаем пользователя
-			$this->reg_model->reg_create($this->input->post('email_create'), $this->input->post('name_create'), $this->input->post('password_create'));
-			$this->session->set_flashdata('customer_success', 'Пользователь успешно создан!');
-			$this->render('login');
-		}
+			// если проверку не прошол
+			if (($this->form_validation->run() == FALSE))
+			{
+				$this->render('login');
+			}
+			else
+			{
+				//создаем пользователя
+				$this->reg_model->reg_create($this->input->post('email_create'), $this->input->post('name_create'), $this->input->post('password_create'), $this->input->post('contact_create'));
+				$this->session->set_flashdata('customer_success', 'Пользователь успешно создан!');
+				$this->render('login');
+			}
+		
 
 	}
 
+//функции валидации
 //------------------------------------------------------------------
-	function username_check($str)
-	{
-
-		// $this->load->model('reg_model');
-		if(!$this->reg_model->reg_proverka($str))
-		{
-			return TRUE;
-		}
-		else
-		{
-			$this->form_validation->set_message('username_check', 'Такой пользователь уже существует');
-			return FALSE;
-		}
-	}
 
 		function email_check($str)
 	{

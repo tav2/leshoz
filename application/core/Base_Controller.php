@@ -43,13 +43,32 @@ class Base_Controller extends CI_Controller {
         $count = $this->cart->cart_get_num();
         foreach ($count as $item) {$num = $item['num'];}
 
+        //если ссессия загружена
+        if($this->session->userdata('logged_in'))
+        {
+            $session_email=$this->session->userdata('usermail');
+            $href = 'account';
+
+            $this->load->model('component/users/Api_users', 'users_api');
+            $account = $this->users_api->get_account_menu();
+        }
+        else
+        {
+            $session_email= 'Войти';
+            $href = 'login';
+            $account = 'Для зарегестрированных пользователей появляется возможность просматривать состояние покупок в личном кабинете, оставлять комментарии и оценки.';
+        }
+
         $this->controller = ($this->controller != '') ? '/'.strtolower($this->controller).'/' : '/';
         $this->load->view($this->theme.'/layouts/'.$this->layout, array(
             'content' => $this->load->view($this->theme.$this->controller.$view, $data, true),
             'about' => $this->Staticpage_model->get_zapis(5, 1),
             'time' => $this->Staticpage_model->get_zapis(5, 2),
             'kontakt' => $this->Staticpage_model->get_zapis(5, 3),
-            'cart_count' => $num
+            'cart_count' => $num,
+            'session_email' => $session_email,
+            'href' => $href,
+            'account' => $account
         ));
     }
 

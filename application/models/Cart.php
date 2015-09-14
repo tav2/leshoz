@@ -79,6 +79,35 @@ class Cart extends MY_Model {
 
 	public function confirtm_order()
 	{
+		//если пользовательль вошел
+		if($this->session->userdata('logged_in'))
+		{
+			// берем данные пользователя из базы
+			$customer_info = $this->users_api->get_customer_info();
+			foreach($customer_info as $item)
+			{
+				$customer_name = $item['customer_name'];
+				$customer_email = $item['customer_email'];
+				$customer_contact = $item['customer_contact'];
+				$customer_id = $item['customer_id'];
+			}
+		}
+		else
+		{
+			// берем данные пользователя из формы
+			$customer_name = $this->input->post('cfname', true);
+			$customer_email = $this->input->post('cfemail', true);
+			$customer_contact = $this->input->post('cfcontact', true);
+			$customer_password = rand(10000,99999);
+
+			//создаем нового пользователя
+			// подключаем модель 
+			$this->load->model('Reg_model');
+			// добавляем в базу нового пользователя
+			$this->reg_model->reg_create($customer_email, $customer_name, $customer_password, $customer_contact);
+			//берем его ид
+			$customer_id = $this->reg_model->get_customer_id($customer_email);
+		}
 
 		$id = $this->db->get_where('cart', array('cart_hash' => $this->input->cookie('cart_hash', true)))->row_array();
 		$this->db->select('*');
@@ -108,9 +137,9 @@ class Cart extends MY_Model {
 		$this->email->subject('Заказ с сайта www.leshoz.kz');
 		$this->email->message(
 				'<strong>Заказ с сайта</strong><br>'.
-				'Имя: '.$this->input->post('cfname', true).'<br>'.
-				'E-mail: '.$this->input->post('cfemail', true).'<br>'.
-				'Сообщение: '.$this->input->post('cfcontact', true).'<br>'.
+				'Имя: '.$customer_name.'<br>'.
+				'E-mail: '.$customer_email.'<br>'.
+				'Сообщение: '.$customer_contact.'<br>'.
 				'Товар: '.$result.'<br>'
 
 			);
@@ -118,5 +147,32 @@ class Cart extends MY_Model {
 		$this->email->send();
 
 		// echo $this->email->print_debugger();
+
+		//записываем в базу покупателя данные о покупке и чистим базу корзины
+
+		// создаем запись в таблице customer_cart
+		$this->load->helper('date');
+		date_default_timezone_set('Asia/Almaty');
+		$datestring = '%Y:%m:%d';
+
+		$data['customer_cart_date'] = mdate($datestring);
+		$data['customer_cart_paid'] = 0;
+		$data['customer_id'] = $customer_id;
+		
+		$this->db->insert('customer_cart', $data);
+
+		// копируем записи из таблицы в customer_cart_product
+		$sql = "INSERT INTO customer_cart_product (customer_product_amount, customer_product_id) SELECT cart_product.* FROM cart_product WHERE cart_id = '{$id['cart_id']}'";
+		$this->db->query($sql);
+		// создаем запись в таблице customer_cart
+		$data = array(
+				'title' => $title,
+				'name' => $name,
+				'date' => $date
+			);
+
+		$this->db->where('id', $id);
+		$this->db->update('mytable', $data); 
+
 	}
 }

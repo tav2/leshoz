@@ -73,9 +73,9 @@
 							<button type='submit' class="submit-search" name='submit'><i class="icon-search"></i>
 							</button>
 						</form>
-						<a href="login" class='info login'>
+						<a href="<?=$href?>" class='info login'>
 							<span class="icon"><i class="icon-lock"></i>
-							</span>Войти</a>
+							</span><?=$session_email?></a>
 						<a href="cart" class='info cart'>
 							<span class="icon"><i class="icon-basket"></i>
 							</span>Товаров
@@ -252,16 +252,9 @@
 							<div class="col-md-3 col-sm-6">
 								<div class="widget-box">
 									<h3 class="wdgt-title">МОЙ АККАУНТ</h3>
-									<ul class="wdgt-ul">
-										<li><a href="javascript:;">Мой аккаунт</a>
-										</li>
-										<li><a href="cart.html">Покупки</a>
-										</li>
-										<li><a href="javascript:;">Настройки</a>
-										</li>
-										<li><a href="javascript:;">Рефералы</a>
-										</li>
-									</ul>
+
+									<?php echo $account ?>
+
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
